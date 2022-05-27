@@ -173,8 +173,17 @@ class ParseTemplate {
                     from++;
                     column++;
                 }
-            } else if (code == ' ' || code == '=' || code == '>') {
-                if (code == ' ') {
+            } else if (
+                code == ' ' ||
+                code == '\n' ||
+                code == '=' ||
+                code == '>'
+            ) {
+                if (code == ' ' || code == '\n') {
+                    if (code == '\n') {
+                        row++;
+                        column = 1;
+                    }
                     this.filterWhiteSpace(attrs, key);
                     key = '';
                 } else if (code == '=') {
@@ -273,7 +282,7 @@ class ParseTemplate {
      *
      */
     matchString(
-        str,
+        str: string,
         from = this.startIndex,
         column = this.column,
         row = this.row

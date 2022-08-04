@@ -1,25 +1,23 @@
-import { elementType } from './Enum/index';
-import { Position } from './position';
-import { CommentTNode, ElementTNode, TextTNode } from './TNode/index';
+import { CommentANode, ElementANode, TextANode } from './AbstractNode/index';
+import { elementType } from './Enum';
+import { Position } from './position/index';
 const EscapeCharacter = ['\n'];
 /**
+ * 解析template,生成 tokenTree
  * @param template html字符串
  */
-class ParseTemplate {
-    template: string;
+class parseTemplate {
+    template: string = '';
     startIndex = 0;
-    endIndex: number;
+    endIndex: number = 0;
     row = 1;
     column = 1;
     root: Array<Element> = [];
     elements: Array<any> = [];
     errors: Array<any> = [];
-    constructor(template: string) {
-        this.template = template;
-        this.endIndex = template.length - 1;
-        this.parse();
-    }
-    parse() {
+    constructor() {}
+    parse(template: string) {
+        this.init(template);
         while (this.startIndex <= this.endIndex) {
             // 以 <开头的 标签
             if (this.template[this.startIndex] == '<') {
@@ -48,6 +46,17 @@ class ParseTemplate {
                 this.attempText();
             }
         }
+        return this.root;
+    }
+    init(template: string) {
+        this.template = template;
+        this.startIndex = 0;
+        this.endIndex = template.length - 1;
+        this.row = 1;
+        this.column = 1;
+        this.root = [];
+        this.elements = [];
+        this.errors = [];
     }
     linkParentChild(element: any) {
         if (this.elements.length > 0) {
@@ -96,10 +105,9 @@ class ParseTemplate {
         let closed = this.matchString('>');
         if (closed) {
             let { index, nextColumn, nextRow } = closed;
-            let closeTagName = this.template.substring(
-                this.startIndex + 2,
-                index
-            );
+            let closeTagName = this.template
+                .substring(this.startIndex + 2, index)
+                .trim();
             this.row = nextRow;
             this.column = nextColumn;
             this.startIndex = index + 1;
@@ -118,7 +126,7 @@ class ParseTemplate {
         if (nextTag) {
             let { index, nextColumn, nextRow } = nextTag;
             endPosition = this.position(nextRow, nextColumn);
-            elementText = new TextTNode(
+            elementText = new TextANode(
                 this.template.substring(this.startIndex, index).trim(),
                 startPosition,
                 endPosition
@@ -128,7 +136,7 @@ class ParseTemplate {
             this.startIndex = index;
         } else {
             endPosition = this.position(Infinity, Infinity);
-            elementText = new TextTNode(
+            elementText = new TextANode(
                 this.template.substring(this.startIndex).trim(),
                 startPosition,
                 endPosition
@@ -212,7 +220,7 @@ class ParseTemplate {
         }
         // 当解析属性时，越界，说明未遇到>,当前解析的字符非标签，而是文本
         if (from == this.template.length) {
-            elementStart = new TextTNode(
+            elementStart = new TextANode(
                 this.template.substring(this.startIndex),
                 this.position(row, column),
                 this.position(Infinity, Infinity)
@@ -229,9 +237,10 @@ class ParseTemplate {
                 this.row = row;
                 this.column = column;
                 // 检测标签有效性
-                elementStart = new ElementTNode(
+                elementStart = new ElementANode(
                     tagName,
                     attributes,
+                    closed,
                     startPosition
                 );
                 // 自闭和标签
@@ -259,7 +268,7 @@ class ParseTemplate {
             this.column = nextColumn;
             this.row = nextRow;
             let endPosition = this.position(),
-                ElementComment = new CommentTNode(
+                ElementComment = new CommentANode(
                     content,
                     startoPosition,
                     endPosition
@@ -333,6 +342,4 @@ class ParseTemplate {
         };
     }
 }
-window['parse'] = ParseTemplate;
-
-export { ParseTemplate };
+export { parseTemplate };

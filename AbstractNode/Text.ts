@@ -1,8 +1,14 @@
-import { elementType } from '../Enum/index';
+import { elementType } from '../Enum';
 import { Position } from '../position/index';
-class CommentTNode {
+
+/**
+ * @param content 文本字符串
+ * @param startPosition 开始位置
+ * @param startPosition 结束位置
+ */
+class TextANode {
     content: string;
-    type = elementType.Comment;
+    type = elementType.Text;
     startPosition: Position;
     endPosition: Position;
     constructor(
@@ -15,4 +21,4 @@ class CommentTNode {
         this.endPosition = endPosition;
     }
 }
-export { CommentTNode };
+export { TextANode };

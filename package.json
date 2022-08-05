@@ -1,17 +1,28 @@
 {
-    "name": "parsehtml",
-    "version": "1.0.0",
+    "name": "parse-html-template",
+    "version": "0.0.9",
     "description": "解析HTML,生成层级树。",
-    "main": "index.js",
+    "main": "./dist/index.js",
+    "types": "/dist/@types/index.d.ts",
+    "files": [
+        "dist/*"
+    ],
     "scripts": {
         "test": "jest",
-        "build": "rollup --config"
+        "build": "rollup --config",
+        "tsc": "tsc index.ts --outDir ./dist",
+        "types": "tsc -d --emitDeclarationOnly --allowJs false --declarationDir ./dist/@types",
+        "prepublish": "npm run build && npm run types"
     },
+    "keywords": [
+        "解析html",
+        "解析template"
+    ],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/fromIceWorld/parseHTML.git"
     },
-    "author": "",
+    "author": "cui wei",
     "license": "ISC",
     "bugs": {
         "url": "https://github.com/fromIceWorld/parseHTML/issues"
@@ -23,5 +34,8 @@
         "jest": "^27.5.1",
         "tslib": "^2.3.1",
         "typescript": "^4.6.3"
+    },
+    "dependencies": {
+        "tern": "^0.24.3"
     }
 }

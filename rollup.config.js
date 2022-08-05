@@ -3,8 +3,8 @@ import typescript from '@rollup/plugin-typescript';
 export default {
     input: 'index.ts',
     output: {
-        file: './dist/main.js',
-        format: 'umd',
+        file: './dist/index.js',
+        format: 'es',
         name: 'parseTemplate',
     },
     strict: false,

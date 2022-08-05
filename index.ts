@@ -1,5 +1,5 @@
 import { CommentANode, ElementANode, TextANode } from './AbstractNode/index';
-import { elementType } from './Enum';
+import { elementType } from './Enum/index';
 import { Position } from './position/index';
 const EscapeCharacter = ['\n'];
 /**

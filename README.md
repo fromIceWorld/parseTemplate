@@ -24,6 +24,15 @@
 <!-- 注释信息-->`
 ```
 
+使用：
+
+```typescript
+let Parser = new parseHTML();
+Parser.parse(htmlString);
+```
+
+
+
 ## parse逻辑
 
 ```typescript
@@ -34,8 +43,6 @@
 	0.4. 文本
 1. 其他                  // 文本
 ```
-
-
 
 ## 元素节点
 

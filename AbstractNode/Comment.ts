@@ -1,4 +1,4 @@
-import { elementType } from '../Enum';
+import { elementType } from '../Enum/index';
 import { Position } from '../position/index';
 class CommentANode {
     content: string;

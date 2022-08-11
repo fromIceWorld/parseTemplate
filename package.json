@@ -1,6 +1,6 @@
 {
     "name": "parse-html-template",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "description": "解析HTML,生成层级树。",
     "main": "./dist/index.js",
     "types": "/dist/@types/index.d.ts",

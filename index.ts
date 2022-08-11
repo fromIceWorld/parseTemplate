@@ -83,6 +83,19 @@ class parseTemplate {
             container.push(str);
         }
     }
+    nextEffectiveChar(index: number) {
+        let nextIndex = index;
+        while (
+            (index <= this.endIndex && this.template[index] == ' ') ||
+            this.template[index] == '\n'
+        ) {
+            index++;
+        }
+        return {
+            nextIndex,
+            char: this.template[index],
+        };
+    }
     closedElement(tagName: string) {
         let endPosition = this.position();
         if (this.elements.length > 0) {
@@ -192,8 +205,13 @@ class parseTemplate {
                         row++;
                         column = 1;
                     }
-                    this.filterWhiteSpace(attrs, key);
-                    key = '';
+                    let { nextIndex, char } = this.nextEffectiveChar(from);
+                    if (char == '=') {
+                        from = nextIndex - 1;
+                    } else {
+                        this.filterWhiteSpace(attrs, key);
+                        key = '';
+                    }
                 } else if (code == '=') {
                     attrs.push(key, '=');
                     key = '';

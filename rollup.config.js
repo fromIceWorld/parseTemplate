@@ -1,16 +1,33 @@
 import resolve from '@rollup/plugin-node-resolve';
 import dts from 'rollup-plugin-dts';
 import typescript from '@rollup/plugin-typescript';
+import { terser } from 'rollup-plugin-terser';
 export default [
     {
         input: 'index.ts',
-        output: {
-            file: './dist/index.js',
-            format: 'es',
-            name: 'parseTemplate',
-        },
+        output: [
+            {
+                file: './lib/esm/index.js',
+                format: 'esm',
+                name: 'parse-html-template',
+            },
+            {
+                file: './lib/umd/index.js',
+                format: 'umd',
+                name: 'parse-html-template',
+            },
+            {
+                file: './lib/cjs/index.js',
+                format: 'cjs',
+                name: 'parse-html-template',
+            },
+            {
+                file: './lib/index.js',
+                format: 'umd',
+                name: 'parse-html-template',
+            },
+        ],
         strict: false,
-
         plugins: [
             resolve(),
             typescript({
@@ -23,19 +40,20 @@ export default [
     {
         input: 'index.ts',
         output: {
-            file: './dist/index.d.ts',
+            file: './lib/index.d.ts',
         },
         plugins: [dts()],
     },
     {
         input: 'index.ts',
-        output: {
-            file: './dist/umd/index.js',
-            format: 'umd',
-            name: 'parseTemplate',
-        },
+        output: [
+            {
+                file: './lib/bundles/parse-html-template.umd.min.js',
+                format: 'umd',
+                name: 'parse-html-template',
+            },
+        ],
         strict: false,
-
         plugins: [
             resolve(),
             typescript({
@@ -43,6 +61,7 @@ export default [
                 declaration: true,
                 declarationMap: true,
             }),
+            terser(),
         ],
     },
 ];
